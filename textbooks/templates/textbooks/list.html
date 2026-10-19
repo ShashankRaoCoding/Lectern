@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Textbooks · Lectern{% endblock %}
+{% block content %}
+<h1>Your textbooks</h1>
+{% for b in books %}
+  <div class="card row">
+    <div>
+      <a href="{% url 'textbook_detail' b.pk %}"><strong>{{ b.title }}</strong></a>
+      <div class="muted">{{ b.sections.count }} section{{ b.sections.count|pluralize }}</div>
+    </div>
+    <a class="btn secondary" href="{% url 'textbook_read' b.pk %}">Read</a>
+  </div>
+{% empty %}
+  <p class="muted">No textbooks yet. Create your first one below.</p>
+{% endfor %}
+
+<div class="card" style="margin-top:1.5rem">
+  <h2 style="margin-top:0">New textbook</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label for="{{ form.title.id_for_label }}">Title</label>
+    <input type="text" name="title" maxlength="200" required id="{{ form.title.id_for_label }}">
+    {{ form.title.errors }}
+    <p><button type="submit">Create</button></p>
+  </form>
+</div>
+{% endblock %}

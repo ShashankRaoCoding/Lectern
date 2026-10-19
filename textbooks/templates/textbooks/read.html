@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load md %}
+{% block title %}{{ tb.title }} · Lectern{% endblock %}
+{% block content %}
+<p><a href="{% url 'textbook_detail' tb.pk %}">← {{ tb.title }}</a></p>
+<h1>{{ tb.title }}</h1>
+{% for s in sections %}
+  <article class="prose">{{ s.markdown|render_markdown }}</article>
+  {% if not forloop.last %}<hr class="sep">{% endif %}
+{% empty %}
+  <p class="muted">No content yet.</p>
+{% endfor %}
+{% endblock %}
+{% block scripts %}{% include "textbooks/_mermaid.html" %}{% endblock %}

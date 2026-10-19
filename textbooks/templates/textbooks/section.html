@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load md %}
+{% block title %}{{ section.title }} · Lectern{% endblock %}
+{% block content %}
+<p><a href="{% url 'textbook_detail' tb.pk %}">← {{ tb.title }}</a></p>
+<p><a class="btn secondary" href="{% url 'add_content' tb.pk %}?section={{ section.pk }}">Append text</a></p>
+<article class="prose">{{ section.markdown|render_markdown }}</article>
+{% endblock %}
+{% block scripts %}{% include "textbooks/_mermaid.html" %}{% endblock %}

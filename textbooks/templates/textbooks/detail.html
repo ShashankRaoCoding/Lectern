@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ tb.title }} · Lectern{% endblock %}
+{% block content %}
+<p><a href="{% url 'textbook_list' %}">← All textbooks</a></p>
+<div class="row">
+  <h1 style="margin:0">{{ tb.title }}</h1>
+  <div>
+    <a class="btn" href="{% url 'add_content' tb.pk %}">Add content</a>
+    {% if sections %}<a class="btn secondary" href="{% url 'textbook_read' tb.pk %}">Read whole textbook</a>{% endif %}
+  </div>
+</div>
+
+<div style="margin-top:1.5rem">
+{% for s in sections %}
+  <div class="card row">
+    <div>
+      <a href="{% url 'section_read' tb.pk s.pk %}"><strong>{{ s.title }}</strong></a>
+      <div class="muted">{{ s.created_at|date:"j M Y" }}{% if s.source_filename %} · {{ s.source_filename }}{% endif %}</div>
+    </div>
+    <form method="post" action="{% url 'section_delete' tb.pk s.pk %}" onsubmit="return confirm('Delete this section?')">
+      {% csrf_token %}<button class="danger" type="submit">Delete</button>
+    </form>
+  </div>
+{% empty %}
+  <p class="muted">Nothing here yet. Use “Add content” to upload a .pptx.</p>
+{% endfor %}
+</div>
+
+<form method="post" action="{% url 'textbook_delete' tb.pk %}" style="margin-top:3rem" onsubmit="return confirm('Delete this textbook and all its sections?')">
+  {% csrf_token %}<button class="danger" type="submit">Delete textbook</button>
+</form>
+{% endblock %}

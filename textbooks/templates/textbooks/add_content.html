@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Add content · Lectern{% endblock %}
+{% block content %}
+<p><a href="{% url 'textbook_detail' tb.pk %}">← {{ tb.title }}</a></p>
+<h1>Add content to “{{ tb.title }}”</h1>
+<div class="card">
+  <form method="post" enctype="multipart/form-data" onsubmit="var b=document.getElementById('go');b.disabled=true;b.textContent='Saving…';">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label for="{{ form.append_to.id_for_label }}">{{ form.append_to.label }}</label>
+    {{ form.append_to }}{{ form.append_to.errors }}
+    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+    <input type="text" name="title" maxlength="200" id="{{ form.title.id_for_label }}" value="{{ form.title.value|default:'' }}">
+    <div class="help">{{ form.title.help_text }}</div>{{ form.title.errors }}
+    <label for="{{ form.text.id_for_label }}">{{ form.text.label }}</label>
+    {{ form.text }}{{ form.text.errors }}
+    <label for="{{ form.pptx.id_for_label }}">{{ form.pptx.label }}</label>
+    <input type="file" name="pptx" accept=".pptx" id="{{ form.pptx.id_for_label }}">
+    {{ form.pptx.errors }}
+    <p class="muted">The .pptx option needs an AI API key in Preferences; plain text doesn’t. Only slide text, tables and speaker notes are sent, and the file isn’t stored.</p>
+    <p><button id="go" type="submit">Add</button></p>
+  </form>
+</div>
+{% endblock %}

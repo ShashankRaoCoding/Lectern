@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Preferences · Lectern{% endblock %}
+{% block content %}
+<h1>Preferences</h1>
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    <p>Current key: {% if profile.masked_key %}<strong>{{ profile.masked_key }}</strong>{% else %}<span class="muted">none saved</span>{% endif %}</p>
+    <label for="{{ form.api_key.id_for_label }}">{{ form.api_key.label }}</label>
+    {{ form.api_key }}
+    <div class="help">{{ form.api_key.help_text }}</div>{{ form.api_key.errors }}
+    {% if profile.masked_key %}
+      <label style="font-weight:400"><input type="checkbox" name="clear_key"> {{ form.clear_key.label }}</label>
+    {% endif %}
+    <label for="{{ form.ai_model.id_for_label }}">{{ form.ai_model.label }}</label>
+    {{ form.ai_model }}
+    <div class="help">{{ form.ai_model.help_text }}</div>{{ form.ai_model.errors }}
+    <p><button type="submit">Save</button></p>
+    <p class="muted">Your key is stored encrypted and is only used to call the AI API on your behalf.</p>
+  </form>
+</div>
+{% endblock %}

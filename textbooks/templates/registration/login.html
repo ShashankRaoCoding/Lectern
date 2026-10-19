@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Log in · Lectern{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:2rem auto">
+  <h1 style="margin-top:0">Log in</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label for="{{ form.username.id_for_label }}">Username</label>
+    {{ form.username }}
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    {{ form.password }}
+    {{ form.username.errors }}{{ form.password.errors }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <p><button type="submit">Log in</button></p>
+  </form>
+</div>
+{% endblock %}
