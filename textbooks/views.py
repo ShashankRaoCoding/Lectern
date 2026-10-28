@@ -76,9 +76,15 @@ def add_content(request, pk):
             if target:
                 target.markdown = target.markdown.rstrip() + "\n\n" + text
                 target.save()
-                messages.success(request, f"Appended to \u201c{target.title}\u201d.")
+                messages.success(request, f"Appended to “{target.title}”.")
                 return redirect("section_read", pk=tb.pk, section_pk=target.pk)
-            section = Section.objects.create(textbook=tb, title=title, source_filename=source, markdown=text)
+            section = Section.objects.create(
+                textbook=tb,
+                title=title,
+                source_filename=source,
+                markdown=text,
+                position=tb.sections.count(),
+            )
             messages.success(request, "Section added.")
             return redirect("section_read", pk=tb.pk, section_pk=section.pk)
     else:
@@ -94,6 +100,35 @@ def section_read(request, pk, section_pk):
     tb = get_object_or_404(Textbook, pk=pk, owner=request.user)
     section = get_object_or_404(Section, pk=section_pk, textbook=tb)
     return render(request, "textbooks/section.html", {"tb": tb, "section": section})
+
+
+@login_required
+@require_POST
+def section_reorder(request, pk, section_pk):
+    tb = get_object_or_404(Textbook, pk=pk, owner=request.user)
+    section = get_object_or_404(Section, pk=section_pk, textbook=tb)
+    direction = request.POST.get("direction")
+
+    sections = list(tb.sections.order_by("position", "created_at", "id"))
+    index = next((i for i, item in enumerate(sections) if item.pk == section.pk), None)
+    if index is None:
+        return redirect("textbook_detail", pk=tb.pk)
+
+    if direction == "up":
+        target_index = index - 1
+    elif direction == "down":
+        target_index = index + 1
+    else:
+        return redirect("textbook_detail", pk=tb.pk)
+
+    if 0 <= target_index < len(sections):
+        sections[index], sections[target_index] = sections[target_index], sections[index]
+        for new_position, item in enumerate(sections, start=1):
+            if item.position != new_position:
+                item.position = new_position
+                item.save(update_fields=["position"])
+
+    return redirect("textbook_detail", pk=tb.pk)
 
 
 @login_required

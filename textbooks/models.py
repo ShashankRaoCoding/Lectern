@@ -44,9 +44,10 @@ class Section(models.Model):
     source_filename = models.CharField(max_length=255, blank=True)
     markdown = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    position = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ["created_at", "id"]
+        ordering = ["textbook", "position", "created_at", "id"]
 
     def __str__(self):
         return f"{self.textbook}: {self.title}"

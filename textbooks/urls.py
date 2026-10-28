@@ -12,6 +12,7 @@ urlpatterns = [
     path("textbooks/<int:pk>/delete/", views.textbook_delete, name="textbook_delete"),
     path("textbooks/<int:pk>/add/", views.add_content, name="add_content"),
     path("textbooks/<int:pk>/sections/<int:section_pk>/", views.section_read, name="section_read"),
+    path("textbooks/<int:pk>/sections/<int:section_pk>/reorder/", views.section_reorder, name="section_reorder"),
     path("textbooks/<int:pk>/sections/<int:section_pk>/delete/", views.section_delete, name="section_delete"),
     path("preferences/", views.preferences, name="preferences"),
 ]
