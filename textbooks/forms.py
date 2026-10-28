@@ -22,7 +22,7 @@ class AddContentForm(forms.Form):
     text = forms.CharField(
         required=False,
         label="Text",
-        widget=forms.Textarea(attrs={"rows": 14, "placeholder": "Write or paste Markdown. Mermaid diagrams go in ```mermaid fences."}),
+        widget=forms.Textarea(attrs={"rows": 14, "placeholder": "Write or paste Markdown. Mermaid diagrams go in ```mermaid fences; LaTeX maths as $...$ or $$...$$."}),
     )
     pptx = forms.FileField(required=False, label="Or upload a PowerPoint (.pptx) for the AI to turn into text")
 
