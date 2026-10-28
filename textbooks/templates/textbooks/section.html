@@ -6,4 +6,4 @@
 <p><a class="btn secondary" href="{% url 'add_content' tb.pk %}?section={{ section.pk }}">Append text</a></p>
 <article class="prose">{{ section.markdown|render_markdown }}</article>
 {% endblock %}
-{% block scripts %}{% include "textbooks/_mermaid.html" %}{% endblock %}
+{% block scripts %}{% include "textbooks/_katex.html" %}{% include "textbooks/_mermaid.html" %}{% endblock %}
