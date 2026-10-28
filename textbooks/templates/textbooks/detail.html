@@ -17,9 +17,24 @@
       <a href="{% url 'section_read' tb.pk s.pk %}"><strong>{{ s.title }}</strong></a>
       <div class="muted">{{ s.created_at|date:"j M Y" }}{% if s.source_filename %} · {{ s.source_filename }}{% endif %}</div>
     </div>
-    <form method="post" action="{% url 'section_delete' tb.pk s.pk %}" onsubmit="return confirm('Delete this section?')">
-      {% csrf_token %}<button class="danger" type="submit">Delete</button>
-    </form>
+
+    <div class="row" style="gap:0.5rem;">
+      <form method="post" action="{% url 'section_reorder' tb.pk s.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="direction" value="up">
+        <button type="submit" title="Move up" {% if forloop.first %}disabled{% endif %}>↑</button>
+      </form>
+
+      <form method="post" action="{% url 'section_reorder' tb.pk s.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="direction" value="down">
+        <button type="submit" title="Move down" {% if forloop.last %}disabled{% endif %}>↓</button>
+      </form>
+
+      <form method="post" action="{% url 'section_delete' tb.pk s.pk %}" onsubmit="return confirm('Delete this section?')">
+        {% csrf_token %}<button class="danger" type="submit">Delete</button>
+      </form>
+    </div>
   </div>
 {% empty %}
   <p class="muted">Nothing here yet. Use “Add content” to upload a .pptx.</p>
