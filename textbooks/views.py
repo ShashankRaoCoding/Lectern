@@ -1,15 +1,31 @@
 from django.contrib import messages
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .ai import AIError, extract_slides, generate_explainer
-from .forms import AddContentForm, PreferencesForm, TextbookForm
+from .forms import AddContentForm, PreferencesForm, SignUpForm, TextbookForm
 from .models import Profile, Section, Textbook
 
 
 def _profile(user) -> Profile:
     return Profile.objects.get_or_create(user=user)[0]
+
+
+def signup(request):
+    if request.user.is_authenticated:
+        return redirect("textbook_list")
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Welcome to Lectern! Add your AI API key under Preferences to get started.")
+            return redirect("textbook_list")
+    else:
+        form = SignUpForm()
+    return render(request, "registration/signup.html", {"form": form})
 
 
 @login_required

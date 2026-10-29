@@ -8,7 +8,7 @@ Small Django app: log in, create textbooks, upload a `.pptx` to have an AI write
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser      # this is your login (there is no sign-up page)
+python manage.py createsuperuser      # optional: admin account (users can also sign up at /signup/)
 python manage.py runserver
 ```
 

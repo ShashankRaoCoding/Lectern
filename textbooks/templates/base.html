@@ -50,6 +50,10 @@
       <span class="spacer"></span>
       <span class="muted">{{ user.get_username }}</span>
       <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="secondary" type="submit">Log out</button></form>
+    {% else %}
+      <span class="spacer"></span>
+      <a href="{% url 'login' %}">Log in</a>
+      <a class="btn" href="{% url 'signup' %}">Sign up</a>
     {% endif %}
   </nav>
 </header>
