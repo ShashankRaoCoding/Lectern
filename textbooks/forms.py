@@ -1,7 +1,13 @@
 from django import forms
 from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Section
+
+
+class SignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = ("username",)
 
 
 class TextbookForm(forms.Form):
